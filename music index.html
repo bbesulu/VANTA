@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VANTA | Official Group</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #121216;
+            --card-bg: #1c1c24;
+            
+            --rosy-brown: #BC8F8F;
+            --steel-blue: #B0C4DE;
+            --turquoise: #AFEEEE;
+            --sea-green: #8FBC8F;
+            --lavender: #E6E6FA;
+
+            --text-main: #f3f0f7;
+            --text-muted: #b8b2c5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 2px;
+        }
+
+        /* Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(18, 18, 22, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(176, 196, 222, 0.15);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            color: var(--lavender);
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center;
+        }
+
+        nav a, .message-nav-btn {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        nav a:hover, .message-nav-btn:hover {
+            color: var(--turquoise);
+        }
+
+        .message-nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Message Panel */
+        .message-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100%;
+            background: var(--card-bg);
+            border-left: 1px solid var(--rosy-brown);
+            z-index: 3000;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message-panel.active {
+            right: 0;
+        }
+
+        .message-panel-header {
+            padding: 20px 25px;
+            background: rgba(18, 18, 22, 0.95);
+            border-bottom: 1px solid rgba(176, 196, 222, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .message-panel-header h3 {
+            font-size: 1.1rem;
+            color: var(--lavender);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .close-msg-panel {
+            background: none;
+            border: none;
+            color: var(--turquoise);
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .close-msg-panel:hover {
+            color: var(--rosy-brown);
+        }
+
+        .message-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background: #15151a;
+        }
+
+        .msg-chat-bubble {
+            background: #1c1c24;
+            border: 1px solid rgba(176, 196, 222, 0.12);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .msg-chat-bubble::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: -6px;
+            width: 10px;
+            height: 10px;
+            background: #1c1c24;
+            border-left: 1px solid rgba(176, 196, 222, 0.12);
+            border-bottom: 1px solid rgba(176, 196, 222, 0.12);
+            transform: rotate(45deg);
+        }
+
+        .msg-img-container {
+            width: 100%;
+            height: 150px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #222;
+        }
+
+        .msg-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .msg-placeholder-img {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            background: linear-gradient(135deg, rgba(188,143,143,0.2), var(--bg-color));
+        }
+
+        .msg-content h4 {
+            font-size: 0.95rem;
+            color: var(--rosy-brown);
+            margin-bottom: 4px;
+            font-family: 'Cinzel', serif;
+        }
+
+        .msg-content p {
+            font-size: 0.82rem;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        .msg-time {
+            align-self: flex-end;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10%;
+            padding-top: 80px;
+            background: radial-gradient(circle at 70% 50%, rgba(176, 196, 222, 0.1) 0%, var(--bg-color) 70%);
+        }
+
+        .hero-content {
+            max-width: 500px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            color: var(--lavender);
+        }
+
+        .hero-content h1 span {
+            color: var(--rosy-brown);
+        }
+
+        .hero-content p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: transparent;
+            border: 1px solid var(--steel-blue);
+            color: var(--steel-blue);
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            border-radius: 4px;
+        }
+
+        .btn:hover {
+            background: var(--steel-blue);
+            color: var(--bg-color);
+            box-shadow: 0 0 20px rgba(176, 196, 222, 0.4);
+        }
+
+        /* Vinyl Design */
+        .vinyl-container {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .vinyl {
+            width: 100%;
+            height: 100%;
+            background: #111;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 0 4px #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: spin 10s linear infinite;
+        }
+
+        .vinyl.paused {
+            animation-play-state: paused;
+        }
+
+        .vinyl::before {
+            content: '';
+            position: absolute;
+            width: 85%;
+            height: 85%;
+            border-radius: 50%;
+            background: repeating-radial-gradient(#111, #111 4px, #1a1a1a 5px, #111 6px);
+        }
+
+        .vinyl-label {
+            width: 120px;
+            height: 120px;
+            background: var(--rosy-brown);
+            border-radius: 50%;
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.4);
+            text-align: center;
+            border: 2px solid #000;
+        }
+
+        .vinyl-label span {
+            font-family: 'Cinzel', serif;
+            font-size: 0.65rem;
+            color: #121216;
+            font-weight: 700;
+        }
+
+        .vinyl-center {
+            width: 15px;
+            height: 15px;
+            background: #121216;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .vinyl-hint {
+            position: absolute;
+            bottom: -35px;
+            font-size: 0.8rem;
+            color: var(--turquoise);
+            letter-spacing: 1px;
+        }
+
+        /* Common Section Styles */
+        section {
+            padding: 100px 10%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--lavender);
+        }
+
+        .section-title span {
+            color: var(--sea-green);
+        }
+
+        .section-desc {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 50px;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Members Section */
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        .member-card {
+            position: relative;
+            height: 350px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--card-bg);
+            border: 1px solid rgba(176, 196, 222, 0.1);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .member-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--turquoise);
+            box-shadow: 0 10px 30px rgba(175, 238, 238, 0.2);
+        }
+
+        .member-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.4s ease;
+        }
+
+        .member-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .member-name-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(18, 18, 22, 0.85) 10%, transparent 60%);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 25px;
+            transition: 0.3s;
+        }
+
+        .member-name-overlay h3 {
+            font-size: 1.6rem;
+            color: var(--lavender);
+            letter-spacing: 3px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        }
+
+        /* Member Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 9, 12, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--rosy-brown);
+            width: 90%;
+            max-width: 450px;
+            padding: 35px;
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+            transform: scale(0.9);
+            transition: 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--turquoise);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .close-modal:hover {
+            color: var(--rosy-brown);
+        }
+
+        .modal-content h3 {
+            font-size: 2rem;
+            color: var(--lavender);
+            margin-bottom: 15px;
+            font-family: 'Cinzel', serif;
+        }
+
+        .modal-info-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .modal-info-list li strong {
+            color: var(--turquoise);
+        }
+
+        .modal-personality {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-main);
+        }
+
+        .modal-personality strong {
+            color: var(--rosy-brown);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* 🖼️ CLEAN GALLERY SECTION (YAZISIZ SAF GALERİ) */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            height: 350px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--card-bg);
+            border: 1px solid rgba(176, 196, 222, 0.1);
+            transition: transform 0.4s ease, border-color 0.4s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--turquoise);
+            box-shadow: 0 10px 30px rgba(175, 238, 238, 0.15);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .g-1 { background: linear-gradient(145deg, rgba(188,143,143,0.15), var(--bg-color)); }
+        .g-2 { background: linear-gradient(145deg, rgba(176,196,222,0.15), var(--bg-color)); }
+        .g-3 { background: linear-gradient(145deg, rgba(143,188,143,0.15), var(--bg-color)); }
+        .g-4 { background: linear-gradient(145deg, rgba(230,230,250,0.15), var(--bg-color)); }
+
+        /* Songs / Discography Section */
+        .discography-wrapper {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .songs-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
+        }
+
+        .song-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 20px 30px;
+            border-radius: 6px;
+            border: 1px solid rgba(176, 196, 222, 0.1);
+            transition: 0.3s;
+        }
+
+        .song-card:hover {
+            border-color: var(--rosy-brown);
+            background: #181820;
+        }
+
+        .song-details h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--lavender);
+        }
+
+        .song-details span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .album-trigger {
+            cursor: pointer;
+            color: var(--turquoise) !important;
+            text-decoration: underline;
+            transition: 0.2s;
+        }
+        .album-trigger:hover {
+            color: var(--rosy-brown) !important;
+        }
+
+        .play-btn {
+            background: none;
+            border: 1px solid var(--turquoise);
+            color: var(--turquoise);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .play-btn:hover {
+            background: var(--turquoise);
+            color: var(--bg-color);
+        }
+
+        /* Album Display Area */
+        .album-display-area {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .album-display-area.active {
+            display: flex;
+        }
+
+        .album-cover-box {
+            width: 220px;
+            height: 220px;
+            background: linear-gradient(135deg, var(--rosy-brown), var(--steel-blue));
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(188, 143, 143, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .album-cover-box:hover {
+            transform: scale(1.03);
+        }
+
+        .album-cover-box h3 {
+            font-size: 1.2rem;
+            color: #121216;
+            margin-bottom: 5px;
+        }
+
+        .album-cover-box p {
+            font-size: 0.75rem;
+            color: #121216;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .click-hint {
+            font-size: 0.75rem;
+            color: var(--turquoise);
+            letter-spacing: 0.5px;
+        }
+
+        /* Tracklist Panel */
+        .album-tracklist-panel {
+            display: none;
+            width: 280px;
+            background: var(--card-bg);
+            border: 1px solid var(--rosy-brown);
+            border-radius: 8px;
+            padding: 20px;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        .album-tracklist-panel.active {
+            display: block;
+        }
+
+        .album-tracklist-panel h4 {
+            font-size: 0.95rem;
+            color: var(--rosy-brown);
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(188,143,143,0.2);
+            padding-bottom: 6px;
+        }
+
+        .track-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .track-list li a {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            text-decoration: none;
+            transition: 0.2s;
+            padding-bottom: 4px;
+            border-bottom: 1px dashed rgba(255,255,255,0.05);
+        }
+
+        .track-list li a:hover {
+            color: var(--turquoise);
+            padding-left: 3px;
+        }
+
+        .track-list li span {
+            color: var(--turquoise);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px;
+            background: #0d0d10;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(176, 196, 222, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                justify-content: center;
+                text-align: center;
+                gap: 50px;
+            }
+            .hero-content {
+                max-width: 100%;
+            }
+            header {
+                padding: 20px;
+            }
+            nav ul {
+                display: none;
+            }
+            .discography-wrapper {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <header>
+        <div class="logo">VANTA</div>
+        <nav>
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#members">Members</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#discography">Discography</a></li>
+                <li><button class="message-nav-btn" onclick="toggleMessagePanel()">💬 Messages</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Message Panel -->
+    <div class="message-panel" id="messagePanel">
+        <div class="message-panel-header">
+            <h3>💬 VANTA Official Chat</h3>
+            <button class="close-msg-panel" onclick="toggleMessagePanel()">&times;</button>
+        </div>
+        
+        <div class="message-body">
+            <div class="msg-chat-bubble">
+                <div class="msg-img-container">
+                    <div class="msg-placeholder-img">Announcement Image 1</div>
+                </div>
+                <div class="msg-content">
+                    <h4>New Album Teaser</h4>
+                    <p>Our 1st Mini Album 'Midnight Fall' is finally coming! Stay tuned for upcoming concept photos.</p>
+                </div>
+                <span class="msg-time">10:42 AM</span>
+            </div>
+
+            <div class="msg-chat-bubble">
+                <div class="msg-img-container">
+                    <div class="msg-placeholder-img">Backstage Photo</div>
+                </div>
+                <div class="msg-content">
+                    <h4>Music Video Notice</h4>
+                    <p>Thank you for all the love on our recent debut stages. Behind the scenes photos are unlocked in the gallery!</p>
+                </div>
+                <span class="msg-time">Yesterday</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <h1>VANTA <span>ILLUSION</span></h1>
+            <p> “We don't ask for the throne. We take the sky.”</p>
+            <a href="#discography" class="btn">Explore Music</a>
+        </div>
+
+        <div class="vinyl-container" id="vinylToggle" title="Click to pause/play">
+            <div class="vinyl" id="vinylDisc">
+                <div class="vinyl-label">
+                    <span>VANTA</span>
+                    <span>TITLE TRACK</span>
+                </div>
+                <div class="vinyl-center"></div>
+            </div>
+            <div class="vinyl-hint">💿 Click to stop</div>
+        </div>
+    </section>
+
+    <!-- Members Section -->
+    <section id="members">
+        <h2 class="section-title">Group <span>Members</span></h2>
+        <p class="section-desc">Talents born from the shadows of the night. Click a member for details.</p>
+        
+        <div class="members-grid">
+            <div class="member-card" onclick="openModal('aerinModal')">
+                <img src="https://resmim.net/cdn/2026/10/25/HjCGi2.jpg" alt="AERIN" onerror="this.style.display='none'">
+                <div class="member-name-overlay">
+                    <h3>AERIN</h3>
+                </div>
+            </div>
+
+            <div class="member-card" onclick="openModal('luxModal')">
+                <img src="https://resmim.net/cdn/2026/10/25/HjCLVZ.jpg" alt="LUX" onerror="this.style.display='none'">
+                <div class="member-name-overlay">
+                    <h3>LUX</h3>
+                </div>
+            </div>
+
+            <div class="member-card" onclick="openModal('zariaModal')">
+                <img src="https://resmim.net/cdn/2026/10/25/HjC9k8.jpg" alt="ZARIA" onerror="this.style.display='none'">
+                <div class="member-name-overlay">
+                    <h3>ZARIA</h3>
+                </div>
+            </div>
+ 
+            <div class="member-card" onclick="openModal('noaModal')">
+                <img src="https://resmim.net/cdn/2026/10/25/HjCPz6.jpg" alt="NOA" onerror="this.style.display='none'">
+                <div class="member-name-overlay">
+                    <h3>NOA</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Member Modals -->
+    <div class="modal-overlay" id="aerinModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('aerinModal')">&times;</button>
+            <h3>AERIN</h3>
+            <ul class="modal-info-list">
+                <li><strong>Original Name:</strong> Kim Min-ji</li>
+                <li><strong>Age:</strong> 23</li>
+                <li><strong>Origin:</strong> South Korea / Australia</li>
+                <li><strong>Position:</strong> Leader, Main Vocalist, Songwriter</li>
+            </ul>
+            <div class="modal-personality">
+                <strong>Personality:</strong>
+                Controlled, observant, and determined. She takes full responsibility when needed, but struggles to ask for help.
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="luxModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('luxModal')">&times;</button>
+            <h3>LUX</h3>
+            <ul class="modal-info-list">
+                <li><strong>Original Name:</strong> Luxuria Lee</li>
+                <li><strong>Age:</strong> 20</li>
+                <li><strong>Origin:</strong> Canada</li>
+                <li><strong>Position:</strong> Vocalist, Center, Maknae</li>
+            </ul>
+            <div class="modal-personality">
+                <strong>Personality:</strong>
+                Curious, intuitive, and stubborn. Although she is the most spontaneous member of the group, she voices emotional truths others overlook.
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="zariaModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('zariaModal')">&times;</button>
+            <h3>ZARIA</h3>
+            <ul class="modal-info-list">
+                <li><strong>Original Name:</strong> Zaria Wilson</li>
+                <li><strong>Age:</strong> 22</li>
+                <li><strong>Origin:</strong> USA</li>
+                <li><strong>Position:</strong> Main Rapper</li>
+            </ul>
+            <div class="modal-personality">
+                <strong>Personality:</strong>
+                Witty and ambitious. She diffuses tension with humor; however, she goes on the defensive when she feels she isn't being taken seriously.
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="noaModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('noaModal')">&times;</button>
+            <h3>NOA</h3>
+            <ul class="modal-info-list">
+                <li><strong>Original Name:</strong> Noa Olivia Davis</li>
+                <li><strong>Age:</strong> 21</li>
+                <li><strong>Origin:</strong> United Kingdom</li>
+                <li><strong>Position:</strong> Lead Vocalist, Composer</li>
+            </ul>
+            <div class="modal-personality">
+                <strong>Personality:</strong>
+                Analytical, calm, and sharp-witted. She appears aloof from the outside, but notices details before anyone else.
+            </div>
+        </div>
+    </div>
+
+    <!-- 🖼️ CLEAN GALLERY SECTION (YAZISIZ SAF GALERİ) -->
+    <section id="gallery">
+        <h2 class="section-title">Photo <span>Gallery</span></h2>
+        
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <!-- 
+                   INTERNETTEN GÖRSEL EKLEMEK İÇİN:
+                   <img src="FOTOĞRAF_LINKI" alt="Gallery Photo"> şeklinde ekleyebilirsin.
+                -->
+                <img src="" alt="Gallery Photo" onerror="this.style.display='none'">
+                <div class="gallery-placeholder g-1">Photo 1</div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="" alt="Gallery Photo" onerror="this.style.display='none'">
+                <div class="gallery-placeholder g-2">Photo 2</div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="" alt="Gallery Photo" onerror="this.style.display='none'">
+                <div class="gallery-placeholder g-3">Photo 3</div>
+            </div>
+
+            <div class="gallery-item">
+                <img src="" alt="Gallery Photo" onerror="this.style.display='none'">
+                <div class="gallery-placeholder g-4">Photo 4</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Songs / Discography -->
+    <section id="discography">
+        <h2 class="section-title">Popular <span>Songs</span></h2>
+        <p class="section-desc">Click songs to listen on YouTube, or click the album to open the tracklist</p>
+        
+        <div class="discography-wrapper">
+            <div class="songs-container">
+                <div class="song-card">
+                    <div class="song-details">
+                        <h4>Eclipse (Title Track)</h4>
+                        <span class="album-trigger" id="showAlbumBtn">1st Mini Album - 'Midnight Fall'</span>
+                    </div>
+                    <a href="https://www.youtube.com" target="_blank" class="play-btn" title="Listen on YouTube">▶</a>
+                </div>
+                <div class="song-card">
+                    <div class="song-details">
+                        <h4>Shadow Play</h4>
+                        <span>1st Mini Album - 'Midnight Fall'</span>
+                    </div>
+                    <a href="https://www.youtube.com" target="_blank" class="play-btn" title="Listen on YouTube">▶</a>
+                </div>
+                <div class="song-card">
+                    <div class="song-details">
+                        <h4>Phantom</h4>
+                        <span>Digital Single</span>
+                    </div>
+                    <a href="https://www.youtube.com" target="_blank" class="play-btn" title="Listen on YouTube">▶</a>
+                </div>
+            </div>
+
+            <div class="album-display-area" id="albumDisplayArea">
+                <div class="album-cover-box" id="albumCoverToggle" title="Click to view album tracks">
+                    <h3>MIDNIGHT FALL</h3>
+                    <p>1st Mini Album</p>
+                </div>
+                <span class="click-hint">👆 Click the cover</span>
+            </div>
+
+            <div class="album-tracklist-panel" id="albumTracklistPanel">
+                <h4>'Midnight Fall' Tracklist</h4>
+                <ul class="track-list">
+                    <li><a href="https://www.youtube.com" target="_blank">1. Intro: Awakening <span>1:45</span></a></li>
+                    <li><a href="https://www.youtube.com" target="_blank">2. Eclipse (Title) <span>3:12</span></a></li>
+                    <li><a href="https://www.youtube.com" target="_blank">3. Shadow Play <span>2:58</span></a></li>
+                    <li><a href="https://www.youtube.com" target="_blank">4. Twilight <span>3:30</span></a></li>
+                    <li><a href="https://www.youtube.com" target="_blank">5. Outro: Silence <span>2:10</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 VANTA Entertainment. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Vinyl Toggle Logic
+        const vinylContainer = document.getElementById('vinylToggle');
+        const vinylDisc = document.getElementById('vinylDisc');
+        const vinylHint = document.querySelector('.vinyl-hint');
+
+        vinylContainer.addEventListener('click', () => {
+            vinylDisc.classList.toggle('paused');
+            if (vinylDisc.classList.contains('paused')) {
+                vinylHint.textContent = '💿 Click to spin';
+            } else {
+                vinylHint.textContent = '💿 Click to stop';
+            }
+        });
+
+        // Message Panel Toggle Logic
+        function toggleMessagePanel() {
+            const panel = document.getElementById('messagePanel');
+            panel.classList.toggle('active');
+        }
+
+        // Member Modal Open/Close Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Album Cover & Tracklist Panel Logic
+        const showAlbumBtn = document.getElementById('showAlbumBtn');
+        const albumDisplayArea = document.getElementById('albumDisplayArea');
+        const albumCoverToggle = document.getElementById('albumCoverToggle');
+        const albumTracklistPanel = document.getElementById('albumTracklistPanel');
+
+        showAlbumBtn.addEventListener('click', () => {
+            albumDisplayArea.classList.add('active');
+            albumDisplayArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+
+        albumCoverToggle.addEventListener('click', () => {
+            albumTracklistPanel.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
